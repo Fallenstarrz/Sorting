@@ -203,7 +203,7 @@ public:
 			if (currentNode.getData() > currentNode.getNext().getData())
 			{
 				// if it is swap forward
-				swapForward(currentNode, currentNode.getNext());
+				swap(currentNode, currentNode.getNext());
 				swapped = true;
 			}
 			else
@@ -222,7 +222,8 @@ public:
 		} while (swapped != false);
 	}
 
-	void swapForward(Node<genericType> current, Node<genericType> next)
+	// Swap the data in the current node and the node to the right
+	void swap(Node<genericType> current, Node<genericType> next)
 	{
 		Node<genericType> temp;
 		temp.setData(current->getData());
