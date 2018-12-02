@@ -191,39 +191,79 @@ public:
 		}
 	}
 
-	// Sort the linked list
+	// Sort the linked list using bubble sort
+	// Bubble sort compares the current element to the next element. If the current is larger than the next it will swap the two values
+	// If will then loop over the list to ensure that the data is sorted. If there is a change then we will loop back to the top, otherwise if no changes were made then the list is sorted.
 	void bubbleSort()
 	{
 		// variable used to drop out of loop
 		bool swapped = true;
+		// node to consider in the checks
 		auto currentNode = head->getNext();
+		// if currentNode is tail at this point then the loop is empty
+		if (currentNode == tail) return;
 		do
 		{
-			// check if our data is greater than the nextNodes data
-			if (currentNode.getData() > currentNode.getNext().getData())
+			// set swapped to false, so we can properly perform our checks
+			swapped = false;
+			while (currentNode != tail)
 			{
-				// if it is swap forward
-				swap(currentNode, currentNode.getNext());
-				swapped = true;
-			}
-			else
-			{
-				// check to see if the next node would be the tail
-				if (currentNode->getNext() == tail)
+				// check if our data is greater than the nextNodes data
+				if (currentNode->getData() > currentNode->getNext()->getData() && currentNode->getNext() != tail)
 				{
-					swapped = false;
+					// if it is swap forward
+					swap(currentNode, currentNode->getNext());
+					swapped = true;
 				}
-				// set currentNode to next node if we are not yet at the tail
 				else
 				{
 					currentNode = currentNode->getNext();
 				}
 			}
+			currentNode = head->getNext();
 		} while (swapped != false);
 	}
 
-	// Swap the data in the current node and the node to the right
-	void swap(Node<genericType> current, Node<genericType> next)
+	// Sort the linked list using selection sort
+	// Selection sort sets the first element to the minimum in the linked list then sets a new threshhold for searching, so we don't keep getting the same minimum value
+	// This will set each new element to the next lowest value until we have searched the entire list
+	void selectionSort()
+	{
+		// current threshhold node
+		auto currentNode = head->getNext();
+		// minimum value found
+		auto minNode = currentNode;
+		// current node to use as iterable
+		auto iterNode = currentNode;
+		// if currentNode is tail at this point then the loop is empty
+		if (currentNode == tail) return;
+		do
+		{
+			// while we haven't searched the whole list
+			while (iterNode != tail)
+			{
+				// if the current minimum node's data is greater than the iterable's data
+				if (minNode->getData() > iterNode->getData())
+				{
+					// set minimum to the iterable
+					minNode = iterNode;
+				}
+				// ++ the iterable node
+				iterNode = iterNode->getNext();
+			}
+			// perform swap
+			swap(currentNode, minNode);
+			// set the search threshhold to the next value, since we just set the currentNode to the minimum in the list
+			currentNode = currentNode->getNext();
+			// reset the search variables to the new threshhold
+			minNode = currentNode;
+			iterNode = currentNode;
+		} while (currentNode != tail);
+	}
+
+
+	// Swap the data in the two nodes passed in as parameters
+	void swap(shared_ptr<Node<genericType>> current, shared_ptr<Node<genericType>> next)
 	{
 		Node<genericType> temp;
 		temp.setData(current->getData());
